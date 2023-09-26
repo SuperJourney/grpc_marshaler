@@ -1,0 +1,31 @@
+syntax = "proto3";
+package demo;
+
+import "google/api/annotations.proto";
+
+
+service ServiceName {
+    // 
+    // @author xieyt01
+    // @reqMetadata *yk_token 运营主体
+    // @reqMetadata *orgcode 租户号
+    rpc Get(GetRequest)
+    returns (GetResponse) {
+        option (google.api.http) = {
+            get: "/v1/{id=1}"
+        };
+    }
+}
+message GetRequest{
+    int64 id = 1;
+}
+message GetResponse{
+    string name = 1;
+    string age = 2; 
+}
+
+
+message ErrMsg {
+    int32 business_code  = 1;
+    string business_msg  = 2;
+}
