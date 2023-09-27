@@ -71,7 +71,13 @@ func (m *Marshaler) UnMarshalWrapper(strings []byte, resp any) ([]interface{}, e
 			return nil, err
 		}
 	} else {
-		bodyF = (proto.MessageV1)(nil)
+		rv := reflect.ValueOf(v[0]).Elem()
+		if rv.CanSet() {
+			rv.Set(reflect.Zero(rv.Type()))
+			bodyF = rv.Addr().Interface().(proto.Message)
+		} else {
+			bodyF = v[0].(proto.Message)
+		}
 	}
 	var respErr error
 	if protoBody.Err != nil {
