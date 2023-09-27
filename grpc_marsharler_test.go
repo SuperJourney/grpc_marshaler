@@ -82,6 +82,18 @@ func TestMarshaler_MarshalWrapper(t *testing.T) {
 			want:      `{"Body":null,"Err":{"code":2,"message":"这个是一个错误"}}`,
 			assertion: assert.NoError,
 		},
+		{
+			name: "test response return nil case",
+			m:    &Marshaler{},
+			args: args{
+				respBody: []interface{}{
+					(*demo.GetResponse)(nil),
+					errors.New("这个是一个错误"),
+				},
+			},
+			want:      `{"Body":null,"Err":{"code":2,"message":"这个是一个错误"}}`,
+			assertion: assert.NoError,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

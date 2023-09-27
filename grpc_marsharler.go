@@ -3,6 +3,7 @@ package marshaler
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 
 	"github.com/golang/protobuf/proto"
 	spb "google.golang.org/genproto/googleapis/rpc/status"
@@ -27,7 +28,7 @@ func (m *Marshaler) MarshalWrapper(rets ...interface{}) ([]byte, error) {
 	}
 	var bodyStr []byte
 	var bodyErr *spb.Status
-	if rets[0] != nil {
+	if rets[0] != nil && !reflect.ValueOf(rets[0]).IsZero() {
 		respbody := rets[0].(proto.Message)
 		var err error
 		bodyStr, err = proto.Marshal(respbody)
